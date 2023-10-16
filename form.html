@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>JS For Beginners</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+  </head>
+  <body>
+    <header>
+      <h1>JS For Beginners</h1>
+    </header>
+
+    <section class="container">
+      <form id="my-form">
+        <h1>Add User</h1>
+        <div class="msg"></div>
+        <div>
+          <label for="name">Name:</label>
+          <input type="text" id="name">
+        </div>
+        <div>
+          <label for="email">Email:</label>
+          <input type="text" id="email">
+        </div>
+        <input class="btn" type="submit" value="Submit">
+      </form>
+      <ul id="listofitems"></ul>
+
+      <ul id="users"></ul>
+
+      <!-- <ul class="items">
+        <li class="item">Item 1</li>
+        <li class="item">Item 2</li>
+        <li class="item">Item 3</li>
+      </ul> -->
+    </section>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      var inputs=document.getElementById('my-form');
+inputs.addEventListener('submit', function(e){
+e.preventDefault();
+var nameInput= document.getElementById('name').value;
+var emailInput= document.getElementById('email').value;
+var userdetails={
+name: nameInput,
+email: emailInput
+}
+axios.post('https://crudcrud.com/api/259adc7f6e0840c9816e85e2d4d51f2d/userdetails', userdetails).then((response) =>{
+      showuserdetails(response.data);
+      console.log(response);
+  }).catch((err) =>{
+      console.log(err);
+  })
+//var userid=emailInput
+//localStorage.setItem(userid, JSON.stringify(userdetails));
+})
+
+function showuserdetails(userdetails){
+var parent=document.getElementById('listofitems');
+var child=document.createElement('li');
+child.textContent=userdetails.name+' - '+userdetails.email;
+//delete button
+const deletebtn=document.createElement('input');
+deletebtn.type="button";
+deletebtn.value='Delete';
+deletebtn.onclick = () => {
+  localStorage.removeItem(userdetails.email);
+  parent.removeChild(child);
+}
+//edit button
+const editbtn=document.createElement('input');
+editbtn.type="button";
+editbtn.value='Edit';
+editbtn.onclick = () => {
+  var nameInput= document.getElementById('name');
+  var emailInput= document.getElementById('email');
+  nameInput.value=userdetails.name;
+  emailInput.value=userdetails.email;
+  localStorage.removeItem(userdetails.email);
+  parent.removeChild(child);
+}
+child.appendChild(deletebtn);
+child.appendChild(editbtn);
+parent.appendChild(child);
+}  
+    </script>
+    
+  </body>
+</html>
