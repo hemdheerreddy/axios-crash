@@ -70,17 +70,18 @@ axios.get('https://crudcrud.com/api/697fff016fd744a5885f205df5715090/userdetails
 function showuserdetails(userdetails){
 var parent=document.getElementById('listofitems');
 var child=document.createElement('li');
+child.id=userdetails.userID;
 child.textContent=userdetails.name+' - '+userdetails.email;
 //delete button
 const deletebtn=document.createElement('input');
 deletebtn.type="button";
 deletebtn.value='Delete';
 deletebtn.onclick = () => {
-  axios.delete('https://crudcrud.com/api/697fff016fd744a5885f205df5715090/userdetails')
+  localStorage.removeItem(userdetails.name);
+  parent.removeChild(child);
+  axios.delete(`https://crudcrud.com/api/697fff016fd744a5885f205df5715090/${userdetails._id}`)
     .then((res) => console.log(res))
     .catch((err) => console.error(err));
-  localStorage.removeItem(userdetails.email);
-  parent.removeChild(child);
 }
 //edit button
 const editbtn=document.createElement('input');
@@ -93,11 +94,22 @@ editbtn.onclick = () => {
   emailInput.value=userdetails.email;
   localStorage.removeItem(userdetails.email);
   parent.removeChild(child);
+  axios.put(`https://crudcrud.com/api/697fff016fd744a5885f205df5715090/${userdetails._id}`,
+  {
+    name: nameInput.value,
+    email: emailInput.value
+    })
+    .then((res) => console.log(res))
+    .catch((err) => console.error(err));
 }
 child.appendChild(deletebtn);
 child.appendChild(editbtn);
 parent.appendChild(child);
 }  
+    </script>
+    
+  </body>
+</html> 
     </script>
     
   </body>
