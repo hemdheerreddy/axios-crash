@@ -77,10 +77,15 @@
       editbtn.onclick = () => {
         var nameInput= document.getElementById('name');
         var emailInput= document.getElementById('email');
+        var phoneInput=document.getElementById('phone');
         nameInput.value=user.name;
         emailInput.value=user.email;
-        localStorage.removeItem(user.email);
-        parent.removeChild(child);
+        phoneInput.value=user.phone;
+        axios.delete(`https://crudcrud.com/api/c2f2192a0d7f4a87b1b248e343dfb94d/userdetails/${user._id}`).then((response) =>{
+            parent.removeChild(child);
+        }).catch((err) =>{
+            console.log(err);
+        })
       }
       child.appendChild(deletebtn);
       child.appendChild(editbtn);
